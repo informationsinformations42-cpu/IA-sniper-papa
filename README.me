@@ -1,0 +1,73 @@
+# 🛡️ AegisDesk Sniper (IA-Sniper)
+
+**AegisDesk Sniper** est une application de bureau intelligente reposant sur des modèles de langage locaux (**LLaMA**), conçue pour assister l'utilisateur avec une architecture multi-agents sécurisée et une interface moderne interactive.
+
+---
+
+## ✨ Fonctionnalités principales
+
+- **Exécution locale et privée :** Fonctionnement autonome sans dépendance au cloud grâce à l'intégration native de moteurs d'inférence locaux (`llama.cpp`).
+- **Architecture Multi-Agents :** Routage intelligent des requêtes vers des agents spécialisés (`desktop/agent-router.cjs`).
+- **Interface moderne et fluide :** Visualisation interactive (hologramme, séquence constellation) et gestionnaire intégré de téléchargement de modèles (`interface/`).
+- **Sécurité et traçabilité :** Journalisation d'audit intégrée (`audit-journal.cjs`), diagnostics système et intégration messagerie (`mail-integration.cjs`).
+- **Multiplateforme :** Packaging prêt pour Windows et Linux via Electron.
+
+---
+
+## 📂 Structure du projet
+
+```text
+aegisdesk-sniper/
+├── build/                 # Scripts et ressources de compilation (installateur NSIS)
+├── desktop/               # Processus principal Electron, routeur d'agents, audit et téléchargement de modèles
+├── documentation/         # Documentation technique complète du projet
+│   └── AegisDesk-sniper/  # Guides (Vision, Agents, Architecture, Sécurité, Installation)
+├── interface/             # Interface utilisateur (HTML, CSS, JS, visualisations)
+├── vendor/                # Binaires et bibliothèques natives (runtime LLaMA CPU x64)
+└── package.json           # Dépendances et scripts de lancement
+```
+
+---
+
+## 🚀 Installation et démarrage
+
+### Prérequis
+- **Node.js** (version 18 ou supérieure recommandée)
+- **npm** (inclus avec Node.js)
+
+### Lancer le projet en développement
+1. Clonez ce dépôt sur votre machine :
+   ```bash
+   git clone https://github.com
+   cd IA-sniper
+   ```
+2. Installez les dépendances (si le dossier `node_modules` n'est pas présent) :
+   ```bash
+   npm install
+   ```
+3. Démarrez l'application :
+   ```bash
+   npm start
+   ```
+
+---
+
+## 📚 Documentation détaillée
+
+Pour approfondir le fonctionnement interne de l'application, consultez les guides disponibles dans le dossier `documentation/AegisDesk-sniper/` :
+1. [Vision et fonctionnalités](documentation/AegisDesk-sniper/01_Vision_et_fonctionnalites.md)
+2. [Fonctionnement des Agents](documentation/AegisDesk-sniper/02_Agents.md)
+3. [Architecture logicielle](documentation/AegisDesk-sniper/03_Architecture.md)
+4. [Sécurité et audit](documentation/AegisDesk-sniper/04_Securite.md)
+5. [Environnement technique](documentation/AegisDesk-sniper/05_Environnement_technique.md)
+6. [État et feuille de route](documentation/AegisDesk-sniper/06_Etat_et_feuille_de_route.md)
+7. [Installation et tests](documentation/AegisDesk-sniper/07_Installation_et_tests.md)
+
+---
+
+## 🛠️ Technologies utilisées
+
+- **Framework Desktop :** Electron
+- **Moteur IA Local :** LLaMA (`llama.cpp` / `llama-server`)
+- **Frontend :** HTML5, CSS3, JavaScript Vanilla
+- **Packaging :** Electron Builder (NSIS pour Windows)

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-src 'none'">
+  <title>Installation des modèles — AegisDesk Sniper</title>
+  <link rel="stylesheet" href="model-installer.css">
+</head>
+<body>
+  <main class="installer">
+    <header>
+      <div class="brand"><span class="brand-icon">A</span><span>AEGISDESK <b>SNIPER</b></span></div>
+      <span class="local-badge">INSTALLATION LOCALE</span>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">CONFIGURATION INITIALE</p>
+      <h1>Configurer les <span>17 modèles IA</span></h1>
+      <p>L’installation vérifie d’abord les modèles déjà présents, réutilise ceux qui sont intacts et télécharge uniquement les fichiers manquants ou invalides. Chaque modèle est associé au rôle de son agent; ce rôle est appliqué à la demande et ne réentraîne pas le modèle. Un seul modèle est chargé en mémoire à la fois. Après les téléchargements, un test démarre le moteur et génère une réponse avant la fin de l’installation.</p>
+      <div class="size-note"><strong>Moteur llama.cpp CPU x64 inclus</strong><span>Ollama n’est pas nécessaire. Le moteur local est installé avec l’application.</span></div>
+      <div class="size-note"><strong id="total-size">Calcul de la taille…</strong><span>Une connexion Internet est requise pour les modèles manquants; jusqu’à 27 Go d’espace libre peuvent être nécessaires si aucun modèle n’est déjà présent.</span></div>
+    </section>
+
+    <section class="progress-panel" aria-live="polite">
+      <div class="progress-label"><strong id="progress-status">Préparation des modèles…</strong><span id="progress-count">0 / 17</span></div>
+      <progress id="overall-progress" max="100" value="0"></progress>
+      <p id="progress-detail">Les modèles présents sont vérifiés par empreinte SHA-256 avant réutilisation.</p>
+    </section>
+
+    <section class="license-panel">
+      <h2>Licences des modèles</h2>
+      <p>Les modèles proviennent de plusieurs éditeurs et peuvent avoir des conditions différentes. Ouvre les fiches des modèles ci-dessous pour consulter leurs conditions d’utilisation. L’application ne fournit pas de conseil juridique.</p>
+      <label class="license-check">
+        <input id="license-accepted" type="checkbox">
+        <span>Je comprends que chaque modèle a ses propres conditions et je m’engage à les respecter.</span>
+      </label>
+    </section>
+
+    <section class="model-list-panel">
+      <h2>Modèles et agents</h2>
+      <ul id="model-list" class="model-list"></ul>
+    </section>
+
+    <footer>
+      <p id="installer-error" role="alert"></p>
+      <div class="actions">
+        <button id="cancel-button" class="secondary-button" type="button" hidden>Arrêter le téléchargement</button>
+        <button id="download-button" class="primary-button" type="button" disabled>Vérifier et installer les modèles</button>
+        <button id="finish-button" class="primary-button" type="button" hidden>Terminer l’installation</button>
+      </div>
+    </footer>
+  </main>
+  <script src="model-installer.js"></script>
+</body>
+</html>

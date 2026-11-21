@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070a12">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-src 'none'">
+  <title>AegisDesk Sniper — Centre de contrôle</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand-mark" href="#" aria-label="AegisDesk Sniper">
+        <span class="brand-icon"><i></i><b></b></span>
+        <span class="brand-word">AEGIS<span>DESK</span><small>SNIPER / CONTROL</small></span>
+      </a>
+      <div class="side-label">CENTRE DE CONTRÔLE</div>
+      <nav class="primary-nav" aria-label="Navigation principale">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">⌂</span><span>Vue générale</span></button>
+        <button class="nav-item" data-view="agents"><span class="nav-icon">◇</span><span>Agents</span><span class="nav-count" id="agent-count">17</span></button>
+        <button class="nav-item" data-view="activity"><span class="nav-icon">≋</span><span>Journal</span></button>
+        <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span><span>Paramètres</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="privacy-card">
+          <span class="privacy-dot"></span>
+          <div><strong>Traitement local</strong><small>Aucune clé API requise</small></div>
+        </div>
+        <div class="user-chip"><span class="avatar">M</span><span><b>Opérateur</b><small>Session locale</small></span><span class="more">···</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumbs">AEGISDESK <span>/</span> <b id="crumb-current">VUE GÉNÉRALE</b></div>
+        <div class="top-actions">
+          <span class="local-pill"><i></i> LOCAL / PRIVÉ</span>
+          <span class="top-divider"></span>
+          <button class="icon-button" id="refresh-status" title="Actualiser l'état" aria-label="Actualiser l'état">↻</button>
+          <span class="clock" id="clock">--:--:--</span>
+        </div>
+      </header>
+
+      <section class="view active" id="overview-view">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> TABLEAU DE BORD / 01</div>
+            <h1>Centre de <span>contrôle</span></h1>
+            <p>Échange avec OVERLORD, qui confie automatiquement chaque demande au spécialiste adapté.</p>
+          </div>
+          <div class="demo-badge"><span class="pulse-dot"></span> 17 AGENTS · TRAITEMENT LOCAL</div>
+        </div>
+
+        <div class="notice-strip">
+          <span class="notice-icon">i</span>
+          <span>Le globe est une visualisation interactive : il ne représente ni une surveillance réelle ni une protection système.</span>
+          <button id="notice-close" aria-label="Fermer l'information">×</button>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel hologram-panel">
+            <div class="panel-heading">
+              <div><span class="panel-kicker">01 / NOYAU LOCAL</span><h2>Globe holographique</h2></div>
+              <span class="holo-live"><i></i> INTERACTIF</span>
+            </div>
+            <div class="holo-stage" id="holo-stage" data-activity="idle">
+              <canvas
+                id="holo-canvas"
+                tabindex="0"
+                role="application"
+                aria-label="Globe holographique interactif. Glissez pour le faire tourner; cliquez sur un point pour choisir un agent; utilisez les flèches du clavier pour tourner."
+              ></canvas>
+              <div class="holo-side-panel holo-side-left">
+                <div class="holo-readout">
+                  <span class="holo-label">MOTEUR LOCAL</span>
+                  <strong id="holo-engine-state">Vérification…</strong>
+                  <small id="holo-engine-detail">État réel du serveur</small>
+                </div>
+                <div class="holo-readout">
+                  <span class="holo-label">MODÈLES ASSOCIÉS</span>
+                  <strong id="holo-agent-ready">0 / 17</strong>
+                  <small>Un modèle par agent</small>
+                </div>
+                <div class="holo-waveform" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <small class="holo-wave-caption" id="holo-activity-label" aria-live="polite">EN ATTENTE</small>
+              </div>
+              <div class="holo-side-panel holo-side-right">
+                <div class="holo-readout">
+                  <span class="holo-label">AGENT SÉLECTIONNÉ</span>
+                  <strong id="holo-selected-agent">OVERLORD</strong>
+                  <small id="holo-selected-role">Assistant central</small>
+                </div>
+                <div class="holo-readout">
+                  <span class="holo-label">MODÈLE ACTIF</span>
+                  <strong id="holo-model-name">En attente</strong>
+                  <small id="holo-route-status">Routage automatique</small>
+                </div>
+                <button class="holo-link-button" id="holo-agents-button" type="button">Voir les agents <span>↗</span></button>
+              </div>
+              <div class="holo-orb-label" aria-hidden="true">
+                <span class="holo-brand-symbol">A</span>
+                <strong>OVERLORD</strong>
+                <small>AEGISDESK · INTELLIGENCE LOCALE</small>
+                <span class="holo-infinity">∞</span>
+              </div>
+              <div class="holo-tooltip" id="holo-tooltip" role="status" hidden></div>
+              <div class="holo-pedestal" aria-hidden="true"><i></i><i></i><i></i></div>
+              <div class="holo-corner holo-corner-tl"></div>
+              <div class="holo-corner holo-corner-tr"></div>
+              <div class="holo-corner holo-corner-bl"></div>
+              <div class="holo-corner holo-corner-br"></div>
+            </div>
+            <div class="holo-controls">
+              <span><i class="holo-control-dot"></i> Glisse pour tourner · clique un nœud pour ouvrir son agent</span>
+              <div>
+                <button class="holo-control-button" id="holo-pause" type="button">Pause</button>
+                <button class="holo-control-button holo-control-primary" id="holo-pulse" type="button">Impulsion lumineuse</button>
+                <button class="holo-control-button" id="holo-reset" type="button">Recentrer</button>
+              </div>
+            </div>
+            <p class="holo-secret-hint" id="holo-secret-hint">Indice : cœur → mémoire → vision → lumière</p>
+          </section>
+
+          <section class="panel system-panel">
+            <div class="panel-heading compact-heading">
+              <div><span class="panel-kicker">03 / ÉTAT DU SYSTÈME</span><h2>État local</h2></div>
+              <span class="tiny-tag">LECTURE SEULE</span>
+            </div>
+            <div class="system-metrics">
+              <div class="metric-item"><span class="metric-icon cyan">◉</span><div><small>MOTEUR IA</small><b id="engine-status">Vérification…</b></div><i class="metric-indicator" id="engine-indicator"></i></div>
+              <div class="metric-item"><span class="metric-icon violet">▥</span><div><small>PROCESSEUR</small><b id="cpu-load">Mesure…</b></div><i class="metric-indicator idle" id="cpu-indicator"></i></div>
+              <div class="metric-item"><span class="metric-icon green">▤</span><div><small>MÉMOIRE UTILISÉE</small><b id="memory-load">Mesure…</b></div><i class="metric-indicator idle" id="memory-indicator"></i></div>
+              <div class="metric-item"><span class="metric-icon amber">▱</span><div><small>STOCKAGE UTILISÉ</small><b id="storage-load">Mesure…</b></div><i class="metric-indicator idle" id="storage-indicator"></i></div>
+            </div>
+          </section>
+
+          <section class="panel assistant-panel">
+            <div class="panel-heading assistant-heading">
+              <div class="assistant-identity"><div class="assistant-avatar"><span></span></div><div><span class="panel-kicker">ASSISTANT CENTRAL</span><h2>OVERLORD</h2></div></div>
+              <div class="assistant-controls">
+                <label class="sr-only" for="active-agent">Agent du chat</label>
+                <select class="agent-select" id="active-agent" aria-label="Choisir l'agent du chat"></select>
+                <span class="assistant-ready" id="assistant-ready"><i></i> LOCAL</span>
+              </div>
+            </div>
+            <div class="chat-messages" id="chat-messages" aria-live="polite">
+              <div class="message assistant-message">
+                <span class="message-avatar">O</span>
+                <div class="message-content"><small>OVERLORD <span>• maintenant</span></small><p>Bonjour. Décris ce dont tu as besoin : je répondrai directement ou le confierai à l’agent spécialisé correspondant. Tu peux aussi choisir un agent dans la liste.</p></div>
+              </div>
+            </div>
+            <div class="quick-prompts">
+              <button data-prompt="Présente-moi les capacités réellement disponibles.">Capacités disponibles <span>↗</span></button>
+              <button data-prompt="Liste les agents configurés et leur état.">État des agents <span>↗</span></button>
+            </div>
+            <form class="chat-composer" id="chat-form">
+              <label class="sr-only" for="chat-input">Message à OVERLORD</label>
+              <textarea id="chat-input" rows="1" maxlength="4000" placeholder="Écris un message à OVERLORD…" required></textarea>
+              <div class="composer-footer"><span><i class="lock-icon">⌑</i> Conversation traitée localement</span><button class="send-button" id="send-button" type="submit" aria-label="Envoyer le message">↑</button></div>
+            </form>
+          </section>
+        </div>
+
+        <footer class="app-footer"><span>AEGISDESK-SNIPER <b>0.7.0</b></span><span>SESSION LOCALE · INDICATEURS EN TEMPS RÉEL</span><span>TRAITEMENT PRIVÉ <i></i></span></footer>
+      </section>
+
+      <section class="view secondary-view" id="agents-view">
+        <div class="page-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> MODULES / 02</div><h1>Agents <span>configurés</span></h1><p>Chaque agent utilise son modèle attitré; un seul modèle est chargé à la fois.</p></div><div class="demo-badge"><span class="pulse-dot"></span> MODÈLES LOCAUX</div></div>
+        <div class="agent-grid" id="agent-grid"></div>
+      </section>
+
+      <section class="view secondary-view" id="activity-view">
+        <div class="page-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> TRAÇABILITÉ / 03</div><h1>Journal <span>d’activité</span></h1><p>Activité conservée 90 jours dans un journal chiffré. Les e-mails envoyés disposent d’un historique séparé.</p></div><div class="demo-badge"><span class="pulse-dot"></span> JOURNAL CHIFFRÉ</div></div>
+        <section class="panel journal-panel">
+          <div class="journal-tabs" role="tablist" aria-label="Contenu du journal">
+            <button class="journal-tab active" data-journal-tab="activity" type="button">Activité</button>
+            <button class="journal-tab" data-journal-tab="sent" type="button">E-mails envoyés</button>
+          </div>
+          <section class="journal-view active" id="journal-activity-view">
+            <div class="panel-heading"><div><span class="panel-kicker">ACTIVITÉ LOCALE</span><h2>Événements récents</h2></div><button class="outline-button" id="refresh-journal" type="button">Actualiser</button></div>
+            <div class="journal-list" id="journal-list" aria-live="polite"></div>
+            <div class="journal-empty" id="journal-empty"><span>◇</span><strong>Aucune activité pour l’instant</strong><small>Les réponses et changements de configuration apparaîtront ici.</small></div>
+          </section>
+          <section class="journal-view" id="journal-sent-view" hidden>
+            <div class="panel-heading"><div><span class="panel-kicker">CONTENU ENVOYÉ</span><h2>Historique des e-mails</h2></div><span class="tiny-tag">90 JOURS · CHIFFRÉ</span></div>
+            <p class="settings-note">Les objets et contenus complets sont conservés dans le journal chiffré de cet appareil. Les mots de passe et jetons d’accès n’y sont jamais ajoutés.</p>
+            <div class="sent-email-list" id="sent-email-list" aria-live="polite"></div>
+            <div class="journal-empty" id="sent-email-empty"><span>◇</span><strong>Aucun e-mail envoyé</strong><small>Les envois confirmés et réponses automatiques apparaîtront ici.</small></div>
+          </section>
+        </section>
+      </section>
+
+      <section class="view secondary-view" id="settings-view">
+        <div class="page-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> CONFIGURATION / 04</div><h1>Paramètres <span>locaux</span></h1><p>Moteur, agents et comptes connectés.</p></div></div>
+        <section class="panel settings-shell">
+          <nav class="settings-nav" aria-label="Rubriques des paramètres">
+            <button class="settings-nav-item active" data-settings-tab="engine" type="button"><span>⚙</span>Moteur</button>
+            <button class="settings-nav-item" data-settings-tab="agents" type="button"><span>◇</span>Agents</button>
+            <button class="settings-nav-item" data-settings-tab="email" type="button"><span>✉</span>Comptes e-mail</button>
+          </nav>
+          <div class="settings-content">
+            <section class="settings-tab active" id="settings-engine">
+              <div class="panel-heading"><div><span class="panel-kicker">MOTEUR D'INFÉRENCE</span><h2>llama.cpp</h2></div><button class="outline-button" id="settings-refresh">Actualiser l’état</button></div>
+              <div class="settings-grid">
+                <div><small>ÉTAT DU SERVEUR</small><b id="settings-server">Vérification…</b></div>
+                <div class="settings-file"><small>EXÉCUTABLE LLAMA-SERVER</small><div><b id="settings-server-path">—</b><button class="outline-button" id="choose-server">Parcourir</button></div></div>
+                <div class="settings-file"><small>MODÈLE GGUF</small><div><b id="settings-model">—</b><button class="outline-button" id="choose-model">Parcourir</button></div></div>
+                <div><small>HÔTE D'ÉCOUTE</small><b>127.0.0.1 (machine locale)</b></div>
+                <div><small>ACCÈS EXTERNE</small><b>Désactivé</b></div>
+              </div>
+              <p class="settings-note">Le moteur llama.cpp CPU x64 est inclus sous Windows : Ollama n’est pas nécessaire. Tu peux choisir un autre llama-server.exe ici. Les modèles vérifiés restent dans ton profil utilisateur et sont associés automatiquement aux agents; le moteur local démarre au premier message.</p>
+              <div class="settings-file"><small>JOURNAL DES PROBLÈMES · SANS HISTORIQUE DE CONVERSATION</small><div><b id="settings-diagnostics-path">—</b><button class="outline-button" id="open-diagnostics">Ouvrir le journal</button></div></div>
+            </section>
+
+            <section class="settings-tab" id="settings-agents">
+              <div class="panel-heading"><div><span class="panel-kicker">MODULES LOCAUX</span><h2>Agents configurés</h2></div><button class="outline-button" id="manage-agents" type="button">Gérer les modèles</button></div>
+              <p class="settings-note">Les agents et leurs modèles restent sur cet ordinateur. Choisis un agent pour gérer son activation ou son modèle GGUF.</p>
+              <div class="settings-agent-list" id="settings-agent-list"></div>
+            </section>
+
+            <section class="settings-tab" id="settings-email">
+              <div class="panel-heading"><div><span class="panel-kicker">CONNEXIONS AUTORISÉES</span><h2>Comptes e-mail</h2></div><span class="tiny-tag">OAUTH · JAMAIS DE MOT DE PASSE</span></div>
+              <p class="settings-note">Recherche un fournisseur, puis connecte-toi sur sa page officielle. L’application ne reçoit pas ton mot de passe; les jetons sont chiffrés par le coffre du système. « Déconnecter » les efface de cet appareil. Pour révoquer aussi l’autorisation côté fournisseur, retire l’application dans les paramètres de sécurité Google ou Microsoft. Les envois manuels demandent une confirmation système; les réponses automatiques restent désactivées tant que tu ne les actives pas pour une liste d’expéditeurs approuvés.</p>
+              <label class="mail-search-label" for="mail-provider-search">Rechercher une plateforme</label>
+              <input class="mail-provider-search" id="mail-provider-search" type="search" placeholder="Gmail, Outlook, Yahoo…" autocomplete="off">
+              <div class="mail-provider-list" id="mail-provider-list" aria-live="polite"></div>
+
+              <section class="mail-oauth-config">
+                <div><span class="panel-kicker">CONFIGURATION INITIALE</span><h3>Identifiant OAuth public</h3></div>
+                <p>Google : active Gmail API, crée un client OAuth « Application de bureau » et ajoute ton compte comme utilisateur de test si Google le demande. Microsoft : crée une application publique pour bureau et active les permissions déléguées de courrier. Colle seulement l’identifiant public; ne colle jamais ton mot de passe ni un secret client. La connexion demandera les permissions de lecture, brouillons et envoi.</p>
+                <form class="mail-oauth-form" id="mail-oauth-form">
+                  <label for="mail-oauth-provider">Plateforme</label>
+                  <select id="mail-oauth-provider"><option value="gmail">Google · Gmail / Workspace</option><option value="outlook">Microsoft · Outlook / 365</option></select>
+                  <label for="mail-client-id">Identifiant d’application</label>
+                  <input id="mail-client-id" type="text" autocomplete="off" spellcheck="false" maxlength="300" required>
+                  <button class="outline-button" id="mail-open-setup" type="button">Ouvrir le portail officiel</button>
+                  <button class="outline-button mail-save-client" type="submit">Enregistrer l’identifiant</button>
+                </form>
+              </section>
+
+              <section class="mail-connected-section">
+                <div class="panel-heading"><div><span class="panel-kicker">JETONS CHIFFRÉS SUR CET APPAREIL</span><h3>Comptes connectés</h3></div></div>
+                <div class="mail-account-list" id="mail-account-list" aria-live="polite"></div>
+              </section>
+
+              <section class="mail-auto-replies">
+                <div class="panel-heading"><div><span class="panel-kicker">AUTOMATISATION EXPLICITE</span><h3>Réponses automatiques</h3></div><span class="tiny-tag">EXPÉDITEURS APPROUVÉS</span></div>
+                <p class="settings-note">Désactivées par défaut. Pour chaque compte, ajoute les adresses autorisées et tes consignes. Quand tu actives la fonction, l’IA locale répond une seule fois par conversation, uniquement pendant que l’application est ouverte. Les messages automatiques et listes sont ignorés; chaque réponse et son contenu sont consignés dans le journal chiffré.</p>
+                <div class="mail-auto-reply-list" id="mail-auto-reply-list" aria-live="polite"></div>
+              </section>
+
+              <section class="mail-tools">
+                <div class="panel-heading"><div><span class="panel-kicker">CONSULTATION LOCALE</span><h3>Rechercher des e-mails</h3></div></div>
+                <form class="mail-search-form" id="mail-search-form">
+                  <label class="sr-only" for="mail-search-account">Compte à rechercher</label>
+                  <select id="mail-search-account" required></select>
+                  <label class="sr-only" for="mail-search-query">Recherche dans les e-mails</label>
+                  <input id="mail-search-query" type="search" maxlength="120" placeholder="Recherche dans la boîte…" autocomplete="off">
+                  <button class="outline-button" type="submit">Rechercher</button>
+                </form>
+                <div class="mail-results" id="mail-results" aria-live="polite"></div>
+                <article class="mail-reader" id="mail-reader" hidden>
+                  <div class="mail-reader-heading"><h4 id="mail-reader-subject"></h4><button class="outline-button" id="mail-reader-close" type="button">Fermer</button></div>
+                  <small id="mail-reader-from"></small>
+                  <pre id="mail-reader-body"></pre>
+                  <button class="outline-button" id="mail-analyze" type="button">Analyser avec l’IA locale</button>
+                </article>
+              </section>
+
+              <section class="mail-compose">
+                <div class="panel-heading"><div><span class="panel-kicker">ACTION EXPLICITE</span><h3>Rédiger un e-mail</h3></div></div>
+                <form id="mail-compose-form">
+                  <label for="mail-compose-account">Compte expéditeur</label>
+                  <select id="mail-compose-account" required></select>
+                  <label for="mail-to">Destinataire(s)</label>
+                  <input id="mail-to" type="text" placeholder="nom@exemple.com" autocomplete="off" required>
+                  <label for="mail-subject">Objet</label>
+                  <input id="mail-subject" type="text" maxlength="200" required>
+                  <label for="mail-body">Message</label>
+                  <textarea id="mail-body" rows="5" maxlength="20000" required></textarea>
+                  <div class="mail-compose-actions">
+                    <button class="outline-button" id="mail-save-draft" type="button">Enregistrer en brouillon</button>
+                    <button class="outline-button mail-send-button" type="submit">Envoyer après confirmation</button>
+                  </div>
+                </form>
+              </section>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="constellation-sequence.js"></script>
+  <script src="hologram.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
